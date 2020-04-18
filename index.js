@@ -288,7 +288,7 @@ function whisper() {
 }
 
 function timeDiff(ref) {
-  return (Date.now() - ref) / 1000 + 'ms'
+  return (Date.now() - ref) / 1000 + 's'
 }
 
 function getDatabaseBackupFilePath(databaseName, timestamp) {
