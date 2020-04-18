@@ -200,6 +200,7 @@ async function encryptBackups(databasesNames, timestamp) {
     await new Promise((resolve, reject) => {
       output.on('finish', async function () {
         try {
+          unlinkSync(compressedBackupFilePath)
           whisper(
             'Encrypted backup to',
             path.basename(encryptedBackupFilePath),
@@ -274,6 +275,8 @@ async function uploadBackups(databasesNames, timestamp) {
       secretKey: process.env.UPLOAD_HANDLER_SECRET_KEY,
     })
     whisper(`Uploaded ${fileName} in ${timeDiff(time)}`)
+    unlinkSync(encryptedBackupFilePath)
+    whisper('Cleaned up the local files')
   }
 }
 
