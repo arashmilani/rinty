@@ -283,7 +283,7 @@ async function uploadBackups(databasesNames, timestamp) {
     }
 
     unlinkSync(encryptedBackupFilePath)
-    whisper('Cleaned up the local files for ' + databasesNames)
+    whisper('Cleaned up the local files for ' + databaseName)
   }
 }
 
