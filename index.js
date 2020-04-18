@@ -52,7 +52,6 @@ function config() {
     process.env.UPLOAD_HANDLER_PROVIDER || 'aws'
 }
 
-
 async function init() {
   let timestamp
   let currentRotation = rotation()
@@ -92,6 +91,7 @@ async function listDatabases() {
     port: process.env.DB_PORT,
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
+    database: 'postgres',
   })
   await client.connect()
   const sql = 'SELECT datname FROM pg_database WHERE datistemplate = false'
