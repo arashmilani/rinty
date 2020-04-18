@@ -268,15 +268,22 @@ async function uploadBackups(databasesNames, timestamp) {
     let time = Date.now()
     whisper(`Uploading ${fileName}`)
 
-    let result = await upload({
-      file: encryptedBackupFilePath,
-      bucket: process.env.UPLOAD_HANDLER_BUCKET,
-      accessKey: process.env.UPLOAD_HANDLER_ACCESS_KEY,
-      secretKey: process.env.UPLOAD_HANDLER_SECRET_KEY,
-    })
-    whisper(`Uploaded ${fileName} in ${timeDiff(time)}`)
+    let result
+    try {
+      result = await upload({
+        file: encryptedBackupFilePath,
+        bucket: process.env.UPLOAD_HANDLER_BUCKET,
+        accessKey: process.env.UPLOAD_HANDLER_ACCESS_KEY,
+        secretKey: process.env.UPLOAD_HANDLER_SECRET_KEY,
+      })
+
+      whisper(`Uploaded ${fileName} in ${timeDiff(time)}`)
+    } catch (err) {
+      whisper(`Error while uploading ${fileName}`, err.message, err.stack)
+    }
+
     unlinkSync(encryptedBackupFilePath)
-    whisper('Cleaned up the local files')
+    whisper('Cleaned up the local files for ' + databasesNames)
   }
 }
 
