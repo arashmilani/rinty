@@ -1,4 +1,4 @@
-config()
+require('./config').init()
 
 const { Client } = require('pg')
 const { execSync } = require('child_process')
@@ -22,35 +22,6 @@ init().catch((err) => {
   shout(err)
   process.exit(1)
 })
-
-function config() {
-  require('dotenv').config()
-
-  process.env.VERBOSE = process.env.VERBOSE === 'true'
-
-  process.env.BACKUP_INTERVAL_IN_HOURS =
-    parseInt(process.env.BACKUP_INTERVAL_IN_HOURS) || 6
-
-  if (process.env.BACKUP_INTERVAL_IN_HOURS > 24) {
-    throw new Error('Backup interval can not be greater than 24 hours')
-  }
-
-  if (process.env.BACKUP_INTERVAL_IN_HOURS < 1) {
-    throw new Error('Backup interval can not be less than 1 hours')
-  }
-
-  process.env.DB_SERVER = process.env.DB_SERVER || 'localhost'
-  process.env.DB_PORT = process.env.DB_PORT || 5432
-  process.env.DB_USERNAME = process.env.DB_USERNAME || process.env.USER
-  process.env.DB_PASSWORD = process.env.DB_PASSWORD || null
-
-  process.env.DB_NAMES_BLACKLIST = process.env.DB_NAMES_BLACKLIST || ''
-  process.env.DB_NAMES_BLACKLIST = process.env.DB_NAMES_BLACKLIST.split(',')
-
-  process.env.UPLOAD_ENABLED = process.env.UPLOAD_ENABLED === 'true'
-  process.env.UPLOAD_HANDLER_PROVIDER =
-    process.env.UPLOAD_HANDLER_PROVIDER || 'aws'
-}
 
 async function init() {
   let timestamp
@@ -213,47 +184,6 @@ async function encryptBackups(databasesNames, timestamp) {
       })
 
       output.on('error', (err) => reject(err))
-    })
-  }
-}
-
-async function decryptBackups(databasesNames, timestamp) {
-  for await (let databaseName of databasesNames) {
-    whisper('Decrypting ', databaseName)
-    let compressedBackupFilePath = getDatabaseCompressedBackupFilePath(
-      databaseName,
-      timestamp
-    )
-    let encryptedBackupFilePath = getDatabaseEncryptedBackupFilePath(
-      databaseName,
-      timestamp
-    )
-
-    let input = fs.createReadStream(encryptedBackupFilePath, {
-      highWaterMark: 16,
-      start: 16,
-    })
-    let output = fs.createWriteStream(compressedBackupFilePath)
-
-    let fh = await fs.promises.open(encryptedBackupFilePath, 'r')
-    let iv = Buffer.alloc(16)
-    await fh.read(iv, 0, 16, 0)
-    await fh.close()
-
-    decipher = crypto.createDecipheriv(
-      process.env.ENCRYPTION_ALGORITHM,
-      process.env.ENCRYPTION_KEY,
-      iv
-    )
-    input.pipe(decipher).pipe(output)
-
-    await new Promise((resolve, reject) => {
-      output.on('finish', function () {
-        whisper('Decrypted file written to disk!')
-        unlinkSync(encryptedBackupFilePath)
-        resolve()
-      })
-      output.on('error', reject)
     })
   }
 }
