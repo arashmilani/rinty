@@ -13,7 +13,6 @@ const { upload } = require('./upload-handlers/' +
   process.env.UPLOAD_HANDLER_PROVIDER)
 
 const backupDirectoryPath = path.join(__dirname, 'backups')
-const backupFileNameRegExp = /-(\d+)\.zip$/
 
 const ONE_HOUR_IN_MILLISECONDS = 60 * 60 * 1000
 lastBackupRotation = null
@@ -266,27 +265,4 @@ function mkdirSyncIfNotExists(dir) {
       throw e
     }
   }
-}
-
-async function getBackupFilesInDirectory(backupDirPath) {
-  const dir = await fs.promises.opendir(backupDirPath)
-  let backupFiles = []
-  for await (const dirEntity of dir) {
-    if (backupFileNameRegExp.test(dirEntity.name)) {
-      backupFiles.push(dirEntity.name)
-    }
-  }
-  return backupFiles
-}
-
-function getBackupFileTimestamp(backupFile) {
-  let match = backupFileNameRegExp.exec(backupFile)
-  return parseInt(match[1])
-}
-
-function zeroPad(s, size = 0) {
-  while (`${s}`.length < size) {
-    s = `0${s}`
-  }
-  return s
 }
