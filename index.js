@@ -86,7 +86,7 @@ function backupDatabase(databaseName, timestamp) {
   whisper('Backing up database named', databaseName)
   let time = Date.now()
   let backupFilePath = getDatabaseBackupFilePath(databaseName, timestamp)
-  const command = `pg_dump postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_SERVER}:${process.env.DB_PORT}/${databaseName} -f ${backupFilePath}`
+  const command = `pg_dump postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_SERVER}:${process.env.DB_PORT}/${databaseName} -f ${backupFilePath} --no-owner`
   let result = execSync(command)
   whisper(
     `Backed up database named ${databaseName} to`,
