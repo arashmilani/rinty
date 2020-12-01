@@ -6,13 +6,13 @@ It also compresses and encrypts the backup files (AES) and uploads them to cloud
 
 ## Getting Started
 
-You can run Rinty supplying the right Environment Variables to the start script of the app. It can be run as a docker container or systemd service. Here we will cover running it in a docker container. 
+You can run Rinty supplying the right Environment Variables to the start script of the app. It can be run as a docker container or a systemd service. Here we will cover running it in a docker container. 
 
 First make a copy of `.env.example` file and name it `.env`. Then edit files according to the table below:
 
 | Variable Name      | Description         |
 | -------   | ------------------- |
-| VERBOSE | Outputs the process of backup, compresion, encryption and uploading of the files. Useful for debugging. set it to `false` in production | 
+| VERBOSE | Outputs the process of backup, compression, encryption and uploading of the files. Useful for debugging. set it to `false` in production | 
 | DB_TYPE      | currently only supported database is `PostgreSQL` |
 | DB_SERVER      | IP address or hostname of the database server |
 | DB_PORT      | Port number of the database server. For PostgreSQL the default port is `5432` |
@@ -29,13 +29,13 @@ First make a copy of `.env.example` file and name it `.env`. Then edit files acc
 | UPLOAD_HANDLER_SECRET_KEY      | Secret key to your selected upload handler |
 
 
-First we will create a Docker image for Rinty. To so so run the command below in the project directory:
+Then create a Docker image for Rinty. To do so run the command below in the project directory:
 
 ````bash
 $ docker build -t rinty .
 ````
 
-Now we can create a container using the image created in previous step. Running our image with `-d` runs the container in detached mode, leaving the container running in the background.
+Now create a container using the image created in previous step. Using `-d` argument runs the container in detached mode, leaving the container running in the background (That's desired mode for a backup tool like Rinty).
 
 ````bash
 $ docker run --env-file ./.env -d rinty
@@ -50,7 +50,7 @@ $ docker ps
 $ docker logs <container id>
 ````
 
-And that's it.
+And that's it. Rinty will start backing up the databeses right away.
 
 ## How backup rotation works?
 
