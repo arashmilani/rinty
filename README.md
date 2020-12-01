@@ -29,13 +29,13 @@ First make a copy of `.env.example` file and name it `.env`. Then edit files acc
 | UPLOAD_HANDLER_SECRET_KEY      | Secret key to your selected upload handler |
 
 
-Then in the project directory run:
+First we will create a Docker image for Rinty. To so so run the command below in the project directory:
 
 ````bash
 $ docker build -t rinty .
 ````
 
-To run the created image use this command:
+Now we can create a container using the image created in previous step. Running our image with `-d` runs the container in detached mode, leaving the container running in the background.
 
 ````bash
 $ docker run --env-file ./.env -d rinty
