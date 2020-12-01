@@ -62,6 +62,7 @@ async function listDatabases() {
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: 'postgres',
+    connectionTimeoutMillis: 5000,
   })
   await client.connect()
   const sql = 'SELECT datname FROM pg_database WHERE datistemplate = false'
