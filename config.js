@@ -17,7 +17,7 @@ module.exports.init = function () {
   process.env.DB_SERVER = process.env.DB_SERVER || 'localhost'
   process.env.DB_PORT = process.env.DB_PORT || 5432
   process.env.DB_USERNAME = process.env.DB_USERNAME || process.env.USER
-  process.env.DB_PASSWORD = process.env.DB_PASSWORD || null
+  process.env.DB_PASSWORD = process.env.DB_PASSWORD || ''
 
   process.env.DB_NAMES_BLACKLIST = process.env.DB_NAMES_BLACKLIST || ''
   process.env.DB_NAMES_BLACKLIST = process.env.DB_NAMES_BLACKLIST.split(',')

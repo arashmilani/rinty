@@ -6,9 +6,11 @@ It also compresses and encrypts the backup files (AES) and uploads them to cloud
 
 ## Getting Started
 
-You can run Rinty supplying the right Environment Variables to the start script of the app. It can be run as a docker container or a systemd service. 
+You can run Rinty supplying the right Environment Variables to the start script of the app. I recommend using a daemon process manager like [PM2](https://github.com/Unitech/pm2). 
 
-### Using Docker
+NOTE: Rinty is using `pg_dump` and it will throw a version mismatch if the `pg_dump` version and database server versions are different. So you either need to run Rinty in the same server with your database or if you are using different servers for your database and Rinty, the `pg_dump` and PostgreSQL versions on both servers should match.
+
+### Using PM2
 
 First clone the repository and make a copy of `.env.example` file and name it `.env`. Then edit files according to the table below:
 
@@ -30,32 +32,17 @@ First clone the repository and make a copy of `.env.example` file and name it `.
 | UPLOAD_HANDLER_ACCESS_KEY      | Access key to your selected upload handler |
 | UPLOAD_HANDLER_SECRET_KEY      | Secret key to your selected upload handler |
 
-
-Then create a Docker image for Rinty. To do so run the command below in the project directory:
+To start Rinty using PM2 just run
 
 ````bash
-$ docker build -t rinty .
+$ pm2 start index.js --name rinty --env production 
 ````
 
-Now create a container using the image created in previous step. Using `-d` argument runs the container in detached mode, leaving the container running in the background (That's desired mode for a backup tool like Rinty).
+Reminder: Restarting PM2 with the processes you manage on server boot/reboot is critical. Read more about [PM2 startup script generator](https://pm2.keymetrics.io/docs/usage/startup/).
 
+After running Rinty using PM2, you can view its logs by:
 ````bash
-$ docker run --env-file ./.env -d rinty
-````
-
-NOTE: Alternatively you can skip the creating your own Docker image and create the container using the image I have pushed to [docker hub](https://hub.docker.com/r/arashmilani/rinty):
-
-````bash
-$ docker run --env-file ./.env -d arashmilani/rinty
-````
-
-After running the container, you can get the container ID and use it to view the Rinty logs:
-````bash
-# Get container ID
-$ docker ps
-
-# Print app output
-$ docker logs <container id>
+$ pm2 logs
 ````
 
 And that's it. Rinty will start backing up the databases right away.
@@ -68,7 +55,7 @@ If you're backing up big things, every day, storage quickly gets expensive. One 
 
 You are welcome to use GitHub issues of the project to report problems or sending feedback. 
 
-Any pull requests to improve the code or add new upload handlers is appreciated.
+Any pull requests to improve the code or add new database server types or upload handlers is appreciated.
 
 
 ## License
