@@ -12,7 +12,7 @@ NOTE: Rinty is using `pg_dump` and it will throw a version mismatch if the `pg_d
 
 ### Using PM2
 
-First clone the repository and make a copy of `.env.example` file and name it `.env`. Then edit files according to the table below:
+First clone the repository and make a copy of `.env.example` file and name it `.env`. Then edit the new file according to the table below to configure the app:
 
 | Variable Name      | Description         |
 | -------   | ------------------- |
