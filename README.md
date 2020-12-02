@@ -10,7 +10,7 @@ You can run Rinty supplying the right Environment Variables to the start script 
 
 ### Using Docker
 
-First clone the repository and make a copy of `.env.example` file and name it `.env`. Then edit files according to the table below:
+First clone the repository and make a copy of `.env.example` file and name it `.env`. Then edit the new file according to the table below to configure the app:
 
 | Variable Name      | Description         |
 | -------   | ------------------- |
