@@ -1,6 +1,6 @@
 {
   "name": "rinty",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A PostgreSQL database server backup tool with file rotation and upload to cloud services.",
   "main": "index.js",
   "scripts": {
