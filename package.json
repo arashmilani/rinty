@@ -7,11 +7,13 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["backup"],
+  "keywords": [
+    "backup"
+  ],
   "author": "Arash Milani <me@arashmilani.com>",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.658.0",
+    "aws-sdk": "^2.814.0",
     "dotenv": "^8.2.0",
     "pg": "^8.0.2",
     "rotation": "0.0.5"
